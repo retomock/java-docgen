@@ -1,0 +1,19 @@
+{
+  "projectRootDirectory": "/home/rmock/Workspace/docgen/example-service",
+  "javaDocSourceDirectories": [
+    "target/generated-sources"
+  ],
+  "basePackage": "ch.retomock",
+  "modules": [
+    {
+      "name": "example-service",
+      "sourceCodeFolder": "src/main/java",
+      "servicePackage": "ch.retomock.docgen.example.service"
+    }
+  ],
+  "jarRepositoryPath": "/home/rmock/.m2/repository",
+  "jarsToAnalyze": [
+    "ch/retomock/docgen/example/example-service/1.0-SNAPSHOT/example-service-1.0-SNAPSHOT.jar"
+  ],
+  "outputFile": "out.html"
+}

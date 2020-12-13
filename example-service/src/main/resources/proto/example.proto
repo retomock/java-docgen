@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package ch.retomock.docgen.example.v1;
+
+option java_multiple_files = true;
+option java_package = "ch.retomock.docgen.example.v1";
+option java_outer_classname = "ExampleServiceProto";
+
+// This is an example service for demo purposes.
+service ExampleService {
+  // This is just an example service method.
+  rpc DoSomething (SomeRequest) returns (SomeResponse);
+  // This is another service method.
+  rpc DoSomethingElse (SomeRequest) returns (SomeResponse);
+}
+
+message SomeRequest {
+  string param1 = 1;
+}
+
+message SomeResponse {
+  int64 id = 1;
+}
