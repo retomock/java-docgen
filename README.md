@@ -1,5 +1,4 @@
 # Java DocGen
-
 The goal of Java DocGen is to automatically document the inner works for your Java Microservices by using static code analysis.
 In order to do so, it combines information extracted for the Java source code files with information extracted from the compiled `.class` files.
 
@@ -10,7 +9,6 @@ In its initial version Java DocGen makes a number of assumptions:
  - Finally, the service is expected to be packaged as a Spring Boot fat JAR.
  
 ## Features
-
 Java DocGen will create a report either in HTML or Markdown format.
 
 For each service method, it will report
@@ -22,16 +20,22 @@ For each service method, it will report
  - a comment describing the service method
 
 ## Example Output
+![Example Output](Screenshot.png)
 
-TODO
+## Building from Source
+`mvn clean package`
 
 ## Usage
 Java DocGen expects a single argument pointing to a JSON config file.
 
-TODO
+`java -cp target/java-docgen-1.0-SNAPSHOT-jar-with-dependencies.jar ch.retomock.docgen.Main config.json`
 
-## TODOs
+### Testing with the example service
+- `cd example-service && mvn clean install`
+- Update the paths in `config.json`
 
+## TODOs / Ideas
  - Add support for "default" methods in interfaces
  - Add links to source code
  - List method callers (if less than N)
+ 

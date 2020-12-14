@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: v1.0.0-example-table
+      author: docgen
+      changes:
+        - createTable:
+            tableName: example
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false

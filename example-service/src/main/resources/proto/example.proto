@@ -12,12 +12,14 @@ service ExampleService {
   rpc DoSomething (SomeRequest) returns (SomeResponse);
   // This is another service method.
   rpc DoSomethingElse (SomeRequest) returns (SomeResponse);
+  // A service method that accessed the database.
+  rpc DoSomethingWithDatabase (SomeRequest) returns (SomeResponse);
 }
 
 message SomeRequest {
-  string param1 = 1;
+  int32 id = 1;
 }
 
 message SomeResponse {
-  int64 id = 1;
+  int32 id = 1;
 }
