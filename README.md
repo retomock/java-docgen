@@ -1,5 +1,5 @@
 # Java DocGen
-The goal of Java DocGen is to automatically document the inner works for your Java Microservices by using static code analysis.
+The goal of Java DocGen is to automatically document the inner workings of your Java Microservices by using static code analysis.
 In order to do so, it combines information extracted for the Java source code files with information extracted from the compiled `.class` files.
 
 In its initial version Java DocGen makes a number of assumptions:

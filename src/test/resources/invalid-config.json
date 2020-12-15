@@ -1,0 +1,12 @@
+{
+  "projectRootDirectory": "projectRoot",
+  "javaDocSourceDirectories": [
+    "javaDocDirectory"
+  ],
+  "basePackage": "ch.retomock",
+  "jarRepositoryPath": "jarRepoPath",
+  "jarsToAnalyze": [
+    "1.jar",
+    "2.jar"
+  ]
+}

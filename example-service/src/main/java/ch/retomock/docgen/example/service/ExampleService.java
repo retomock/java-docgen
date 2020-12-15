@@ -10,6 +10,7 @@ import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @GRpcService
 @RequiredArgsConstructor
@@ -19,7 +20,11 @@ public class ExampleService extends ExampleServiceImplBase {
 
   @Override
   public void doSomething(SomeRequest request, StreamObserver<SomeResponse> responseObserver) {
-    responseObserver.onNext(SomeResponse.newBuilder().setId(1).build());
+    var builder = SomeResponse.newBuilder().setId(1);
+    if (hasPermission("view:data")) {
+      builder.setData("some data");
+    }
+    responseObserver.onNext(builder.build());
     responseObserver.onCompleted();
   }
 
@@ -40,5 +45,10 @@ public class ExampleService extends ExampleServiceImplBase {
     var example = repository.getExampleById(request.getId());
     responseObserver.onNext(SomeResponse.newBuilder().setId(example.getId()).build());
     responseObserver.onCompleted();
+  }
+
+  private static boolean hasPermission(String permission) {
+    return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+        .anyMatch(authority -> authority.getAuthority().equals(permission));
   }
 }

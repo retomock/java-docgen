@@ -93,7 +93,7 @@ public class DocGen {
         ref -> Arrays.stream(ref.getClassName().split("[\\.\\$]"))
             .filter(s -> s.contains("Grpc")).findFirst().orElse("").replace("Grpc", "." + ref.getMethodName()))
         .collect(Collectors.toUnmodifiableList());
-    var serviceMethod = ServiceMethod.builder()
+    return ServiceMethod.builder()
         .name(serviceMethodName)
         .requiredPermission(requiredPermission)
         .conditionalPermissions(conditionalPermissions)
@@ -101,6 +101,5 @@ public class DocGen {
         .databaseTables(collector.getJooqTableCollector().getTables())
         .comment(comment)
         .build();
-    return serviceMethod;
   }
 }

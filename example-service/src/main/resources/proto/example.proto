@@ -22,4 +22,5 @@ message SomeRequest {
 
 message SomeResponse {
   int32 id = 1;
+  string data = 2;
 }

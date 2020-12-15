@@ -2,10 +2,14 @@ package ch.retomock.docgen.domain;
 
 import java.util.Collection;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Builder
 @Getter
+@ToString
+@EqualsAndHashCode
 public class ServiceMethod implements Comparable<ServiceMethod> {
 
   private final String name;
