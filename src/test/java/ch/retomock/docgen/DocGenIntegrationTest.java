@@ -35,7 +35,7 @@ class DocGenIntegrationTest {
 
     // then
     verify(outputFormat).title("example-service");
-    verify(outputFormat).writeServiceMethod(ServiceMethod.builder()
+    verify(outputFormat).serviceMethod(ServiceMethod.builder()
         .name("ExampleService.doSomething")
         .requiredPermission("")
         .conditionalPermissions(Set.of("view:data"))
@@ -57,7 +57,7 @@ class DocGenIntegrationTest {
 
     // then
     verify(outputFormat).title("example-service");
-    verify(outputFormat).writeServiceMethod(ServiceMethod.builder()
+    verify(outputFormat).serviceMethod(ServiceMethod.builder()
         .name("ExampleService.doSomethingElse")
         .requiredPermission("some-permission")
         .conditionalPermissions(Set.of())
@@ -79,7 +79,7 @@ class DocGenIntegrationTest {
 
     // then
     verify(outputFormat).title("example-service");
-    verify(outputFormat).writeServiceMethod(ServiceMethod.builder()
+    verify(outputFormat).serviceMethod(ServiceMethod.builder()
         .name("ExampleService.doSomethingWithDatabase")
         .requiredPermission("")
         .conditionalPermissions(Set.of())

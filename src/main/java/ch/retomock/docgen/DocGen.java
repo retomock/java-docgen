@@ -71,13 +71,14 @@ public class DocGen {
         "DB Tables accessed",
         "Description");
     for (var serviceMethod : serviceMethods) {
-      outputFormat.writeServiceMethod(serviceMethod);
+      outputFormat.serviceMethod(serviceMethod);
     }
     outputFormat.endTable();
   }
 
   private ServiceMethod processServiceMethod(Method SIGNATURE, Class<?> clazz, Method method, String comment) throws Exception {
-    var serviceMethodName = method.getDeclaringClass().getSimpleName() + "." + method.getName();
+    var serviceMethodName = method.getDeclaringClass().getSuperclass().getSimpleName().replace("ImplBase", "")
+        + "." + method.getName();
     var preAuthorize = method.getAnnotation(PreAuthorize.class);
     if (preAuthorize == null) {
       preAuthorize = method.getDeclaringClass().getAnnotation(PreAuthorize.class);
@@ -93,6 +94,7 @@ public class DocGen {
         ref -> Arrays.stream(ref.getClassName().split("[\\.\\$]"))
             .filter(s -> s.contains("Grpc")).findFirst().orElse("").replace("Grpc", "." + ref.getMethodName()))
         .collect(Collectors.toUnmodifiableList());
+
     return ServiceMethod.builder()
         .name(serviceMethodName)
         .requiredPermission(requiredPermission)

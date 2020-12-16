@@ -16,6 +16,7 @@ public class Main {
 
       var outputFile = new File(config.getOutputFile());
       try (var outputFormat = OutputFormat.getOutputFormat(outputFile)) {
+        outputFormat.tableOfContents(config.getModules());
         for (var module : config.getModules()) {
           docGen.processModule(module, outputFormat);
         }
@@ -23,7 +24,7 @@ public class Main {
       }
     } catch (DocGenConfigException e) {
       System.err.println(e.getMessage());
-    }catch (ClassNotFoundException e) {
+    } catch (ClassNotFoundException e) {
       System.err.println("Class not found. Please check your config: " + e.getMessage());
     } catch (Exception e) {
       System.err.println("Sorry, but something went wrong");

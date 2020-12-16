@@ -1,5 +1,6 @@
 package ch.retomock.docgen.output;
 
+import ch.retomock.docgen.config.DocGenConfig.Module;
 import ch.retomock.docgen.domain.ServiceMethod;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,8 +25,23 @@ public class HtmlOutputFormat implements OutputFormat {
   }
 
   @Override
+  public void tableOfContents(Module[] modules) throws IOException {
+    if (modules.length > 1) {
+      out.write("<h2>Services Index:</h2>\n<ul>\n");
+      for (var module : modules) {
+        out.write("<li><a href=\"#");
+        out.write(module.getName());
+        out.write("\">");
+        out.write(module.getName());
+        out.write("</a></li>");
+      }
+      out.write("</ul>\n");
+    }
+  }
+
+  @Override
   public void title(String moduleName) throws IOException {
-    out.write("<h2>Service: " + moduleName + "</h2>");
+    out.write("<h2><a name=\"" + moduleName + "\">Service: " + moduleName + "</h2>");
   }
 
   @Override
@@ -50,8 +66,10 @@ public class HtmlOutputFormat implements OutputFormat {
   }
 
   @Override
-  public void writeServiceMethod(ServiceMethod serviceMethod) throws IOException {
-    out.write("<tr><td><pre>");
+  public void serviceMethod(ServiceMethod serviceMethod) throws IOException {
+    out.write("<tr><td><pre><a name=\"");
+    out.write(serviceMethod.getName());
+    out.write("\">");
     out.write(serviceMethod.getName());
     out.write("</pre></td>");
     out.write("<td><pre>");
@@ -68,9 +86,11 @@ public class HtmlOutputFormat implements OutputFormat {
     out.write("</ul></pre></td>");
     out.write("<td><pre><ul>");
     for (var grpcServiceCall : serviceMethod.getGrpcServiceCalls()) {
-      out.write("<li>");
+      out.write("<li><a href=\"#");
       out.write(grpcServiceCall);
-      out.write("</li>");
+      out.write("\">");
+      out.write(grpcServiceCall);
+      out.write("</a></li>");
     }
     out.write("</ul></pre></td>");
     out.write("<td><pre><ul>");

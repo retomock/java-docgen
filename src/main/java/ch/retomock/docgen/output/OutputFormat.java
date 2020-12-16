@@ -1,5 +1,6 @@
 package ch.retomock.docgen.output;
 
+import ch.retomock.docgen.config.DocGenConfig.Module;
 import ch.retomock.docgen.config.DocGenConfigException;
 import ch.retomock.docgen.domain.ServiceMethod;
 import java.io.File;
@@ -16,7 +17,7 @@ public interface OutputFormat extends AutoCloseable {
 
   void header(String... headers) throws IOException;
 
-  void writeServiceMethod(ServiceMethod serviceMethod) throws IOException;
+  void serviceMethod(ServiceMethod serviceMethod) throws IOException;
 
   static OutputFormat getOutputFormat(File outputFile) throws IOException {
     if (outputFile.getName().endsWith(".md")) {
@@ -27,4 +28,6 @@ public interface OutputFormat extends AutoCloseable {
     }
     throw new DocGenConfigException("Unsupported file extension for output file: " + outputFile.getName());
   }
+
+  void tableOfContents(Module[] modules) throws IOException;
 }

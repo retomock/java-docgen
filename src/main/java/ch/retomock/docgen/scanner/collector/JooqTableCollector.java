@@ -70,7 +70,7 @@ public class JooqTableCollector implements Collector {
         tables.add(aliasedTable != null ? aliasedTable.getName() : table.getName());
       } catch (Exception e) {
         System.err.println("WARNING: Unable to determine table name: " + e);
-        tables.add("&lt;error getting table name&gt;");
+        tables.add("&lt;unknown table&gt;");
       }
     }
   }
