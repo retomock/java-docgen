@@ -13,6 +13,7 @@ import lombok.ToString;
 public class ServiceMethod implements Comparable<ServiceMethod> {
 
   private final String name;
+  private final String sourceLink;
   private final String requiredPermission;
   private final Collection<String> conditionalPermissions;
   private final Collection<String> grpcServiceCalls;

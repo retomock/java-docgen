@@ -13,6 +13,7 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeSet;
@@ -54,7 +55,7 @@ public class DocGen {
         var javaDocKey = method.getDeclaringClass().getSuperclass().getSimpleName() + "." + method.getName();
         Optional.ofNullable(javaDocComments.get(javaDocKey)).ifPresent(comment -> {
           try {
-            serviceMethods.add(processServiceMethod(getGenericSignatureMethod, clazz, method, comment));
+            serviceMethods.add(processServiceMethod(getGenericSignatureMethod, clazz, method, comment, module));
           } catch (Exception e) {
             throw new RuntimeException(e);
           }
@@ -76,32 +77,54 @@ public class DocGen {
     outputFormat.endTable();
   }
 
-  private ServiceMethod processServiceMethod(Method SIGNATURE, Class<?> clazz, Method method, String comment) throws Exception {
+  private ServiceMethod processServiceMethod(Method SIGNATURE, Class<?> clazz, Method method, String comment,
+      Module module) throws Exception {
     var serviceMethodName = method.getDeclaringClass().getSuperclass().getSimpleName().replace("ImplBase", "")
         + "." + method.getName();
-    var preAuthorize = method.getAnnotation(PreAuthorize.class);
-    if (preAuthorize == null) {
-      preAuthorize = method.getDeclaringClass().getAnnotation(PreAuthorize.class);
-    }
     var collector = new AggregateCollector(classLoader, config.getBasePackage());
     var signature = (String) SIGNATURE.invoke(method);
     classScanner.walkCallTree(clazz.getName(), method.getName(), signature, collector, new ArrayDeque<>());
-    var requiredPermission = preAuthorize != null
-        ? preAuthorize.value().replace("hasAuthority('", "").replace("')", "")
-        : "";
+    var requiredPermission = getRequiredPermissions(method);
     var conditionalPermissions = collector.getPermissionCollector().getPermissions();
-    var grpcServiceCalls = collector.getMethodCollector().getReferencedMethods().stream().map(
-        ref -> Arrays.stream(ref.getClassName().split("[\\.\\$]"))
-            .filter(s -> s.contains("Grpc")).findFirst().orElse("").replace("Grpc", "." + ref.getMethodName()))
-        .collect(Collectors.toUnmodifiableList());
-
+    var grpcServiceCalls = getGrpcServiceCalls(collector);
+    var sourceLink = getSourceLink(method, module, collector);
     return ServiceMethod.builder()
         .name(serviceMethodName)
+        .sourceLink(sourceLink)
         .requiredPermission(requiredPermission)
         .conditionalPermissions(conditionalPermissions)
         .grpcServiceCalls(grpcServiceCalls)
         .databaseTables(collector.getJooqTableCollector().getTables())
         .comment(comment)
         .build();
+  }
+
+  private String getRequiredPermissions(Method method) {
+    var preAuthorize = method.getAnnotation(PreAuthorize.class);
+    if (preAuthorize == null) {
+      preAuthorize = method.getDeclaringClass().getAnnotation(PreAuthorize.class);
+    }
+    return preAuthorize != null
+        ? preAuthorize.value().replace("hasAuthority('", "").replace("')", "")
+        : "";
+  }
+
+  private List<String> getGrpcServiceCalls(AggregateCollector collector) {
+    return collector.getMethodCollector().getReferencedMethods().stream().map(
+        ref -> Arrays.stream(ref.getClassName().split("[\\.\\$]"))
+            .filter(s -> s.contains("Grpc")).findFirst().orElse("").replace("Grpc", "." + ref.getMethodName()))
+        .collect(Collectors.toUnmodifiableList());
+  }
+
+  private String getSourceLink(Method method, Module module, AggregateCollector collector) {
+    return Optional.ofNullable(collector.getSourceFile())
+        .filter(sourceFile -> sourceFile.equals(method.getDeclaringClass().getSimpleName() + ".java"))
+        .filter(ignore -> collector.getLineNumber() > 0)
+        .filter(ignore -> config.getSourceControlBaseUrl() != null && !config.getSourceControlBaseUrl().isBlank())
+        .map(ignore -> config.getSourceControlBaseUrl() + "/"
+            + module.getSourceCodeFolder() + "/"
+            + method.getDeclaringClass().getName().replace(".", "/") + ".java#L"
+            + collector.getLineNumber())
+        .orElse("#");
   }
 }

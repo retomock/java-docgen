@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import lombok.RequiredArgsConstructor;
 
 public class GitHubMarkdownOutputFormat implements OutputFormat {
 
@@ -70,9 +69,11 @@ public class GitHubMarkdownOutputFormat implements OutputFormat {
   public void serviceMethod(ServiceMethod serviceMethod) throws IOException {
     out.write("| <a name=\"");
     out.write(serviceMethod.getName());
-    out.write("\"></a>");
+    out.write("\"></a>[");
     out.write(serviceMethod.getName());
-    out.write(" | ");
+    out.write("](");
+    out.write(serviceMethod.getSourceLink());
+    out.write(") | ");
     if (serviceMethod.getRequiredPermission() != null) {
       out.write(serviceMethod.getRequiredPermission());
     }

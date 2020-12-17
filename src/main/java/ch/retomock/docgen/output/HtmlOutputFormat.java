@@ -69,9 +69,11 @@ public class HtmlOutputFormat implements OutputFormat {
   public void serviceMethod(ServiceMethod serviceMethod) throws IOException {
     out.write("<tr><td><pre><a name=\"");
     out.write(serviceMethod.getName());
+    out.write("\"><a href=\"");
+    out.write(serviceMethod.getSourceLink());
     out.write("\">");
     out.write(serviceMethod.getName());
-    out.write("</pre></td>");
+    out.write("</a></pre></td>");
     out.write("<td><pre>");
     if (serviceMethod.getRequiredPermission() != null) {
       out.write(serviceMethod.getRequiredPermission());

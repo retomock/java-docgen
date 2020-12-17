@@ -22,6 +22,8 @@ public class ClassScanner {
       ArrayDeque<MethodReference> callStack
   ) throws Exception {
     var childCollector = findReferencedMethods(className, methodName, signature);
+    collector.sourceFile(childCollector.getSourceFile());
+    collector.lineNumber(childCollector.getLineNumber());
     for (var referencedMethod : childCollector.getMethodCollector().getReferencedMethods()) {
       if (referencedMethod.getClassName().contains("Grpc$")) {
         collector.getMethodCollector().getReferencedMethods().add(referencedMethod);
@@ -52,7 +54,7 @@ public class ClassScanner {
     var classReader = new ClassReader(classLoader.getClassAsStream(className));
     var collector = new AggregateCollector(classLoader, basePackage);
     var classVisitor = new DocGenClassVisitor(methodName, expectedSignature, collector);
-    classReader.accept(classVisitor, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+    classReader.accept(classVisitor, ClassReader.SKIP_FRAMES);
     if (!classVisitor.isMethodFound()) {
       try {
         var superClass = classLoader.loadClass(className).getSuperclass().getName();
