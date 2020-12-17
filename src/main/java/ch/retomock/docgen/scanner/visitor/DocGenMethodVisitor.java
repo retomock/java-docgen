@@ -2,6 +2,7 @@ package ch.retomock.docgen.scanner.visitor;
 
 import ch.retomock.docgen.scanner.collector.AggregateCollector;
 import org.objectweb.asm.Handle;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -64,6 +65,11 @@ public class DocGenMethodVisitor extends MethodVisitor {
       var target = (Handle) bootstrapMethodArguments[1];
       referencedMethod(target.getOwner(), target.getName(), target.getDesc());
     }
+  }
+
+  @Override
+  public void visitLineNumber(int line, Label start) {
+    aggregateCollector.lineNumber(line);
   }
 
   void referencedMethod(String owner, String methodName, String signature) {

@@ -37,6 +37,8 @@ class DocGenIntegrationTest {
     verify(outputFormat).title("example-service");
     verify(outputFormat).serviceMethod(ServiceMethod.builder()
         .name("ExampleService.doSomething")
+        .sourceLink(
+            "https://github.com/retomock/java-docgen/tree/main/example-service/src/main/java/ch/retomock/docgen/example/service/ExampleService.java#L23")
         .requiredPermission("")
         .conditionalPermissions(Set.of("view:data"))
         .grpcServiceCalls(List.of())
@@ -59,6 +61,8 @@ class DocGenIntegrationTest {
     verify(outputFormat).title("example-service");
     verify(outputFormat).serviceMethod(ServiceMethod.builder()
         .name("ExampleService.doSomethingElse")
+        .sourceLink(
+            "https://github.com/retomock/java-docgen/tree/main/example-service/src/main/java/ch/retomock/docgen/example/service/ExampleService.java#L36")
         .requiredPermission("some-permission")
         .conditionalPermissions(Set.of())
         .grpcServiceCalls(List.of("ExampleService.doSomething"))
@@ -81,6 +85,8 @@ class DocGenIntegrationTest {
     verify(outputFormat).title("example-service");
     verify(outputFormat).serviceMethod(ServiceMethod.builder()
         .name("ExampleService.doSomethingWithDatabase")
+        .sourceLink(
+            "https://github.com/retomock/java-docgen/tree/main/example-service/src/main/java/ch/retomock/docgen/example/service/ExampleService.java#L45")
         .requiredPermission("")
         .conditionalPermissions(Set.of())
         .grpcServiceCalls(List.of())

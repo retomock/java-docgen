@@ -57,6 +57,8 @@ public class DocGenConfig {
   @NotBlank
   private String outputFile;
 
+  private String sourceControlBaseUrl;
+
   @Data
   @NoArgsConstructor
   @AllArgsConstructor

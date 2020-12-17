@@ -15,5 +15,6 @@
   "jarsToAnalyze": [
     "ch/retomock/docgen/example/example-service/1.0-SNAPSHOT/example-service-1.0-SNAPSHOT.jar"
   ],
-  "outputFile": "out.html"
+  "outputFile": "out.html",
+  "sourceControlBaseUrl": "https://github.com/retomock/java-docgen/tree/main/example-service"
 }

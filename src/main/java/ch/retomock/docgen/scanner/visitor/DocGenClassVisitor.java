@@ -34,6 +34,11 @@ public class DocGenClassVisitor extends ClassVisitor {
     return null;
   }
 
+  @Override
+  public void visitSource(String source, String debug) {
+    collector.sourceFile(source);
+  }
+
   public boolean isMethodFound() {
     return methodFound;
   }

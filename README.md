@@ -45,6 +45,7 @@ The `config.json` file has the following structure:
 | jarRepositoryPath | Base path where the JAR files are located. E.g. /home/your-name/.m2/repository |
 | jarsToAnalyze[] | JARs to Analyze (relative to `jarRepositoryPath`) |
 | outputFile | File where to write the output to (supported formats: `.html` or `.md`) |
+| sourceControlBaseUrl | Optional: Base URL of your source control. E.g. GitHub |
 
 There is an example [config.json](config.json) file in the root folder of this project.
 
