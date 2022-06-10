@@ -49,7 +49,7 @@ public class SpringBootJarLoader extends JarLauncher {
       }
       var archive = new JarFileArchive(jarFile);
       archives.add(archive);
-      archives.addAll(archive.getNestedArchives(this::isNestedArchive));
+      archive.getNestedArchives(null, this::isNestedArchive).forEachRemaining(archives::add);
     }
     return archives;
   }

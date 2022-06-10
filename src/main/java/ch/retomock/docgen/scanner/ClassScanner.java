@@ -54,7 +54,11 @@ public class ClassScanner {
     var classReader = new ClassReader(classLoader.getClassAsStream(className));
     var collector = new AggregateCollector(classLoader, basePackage);
     var classVisitor = new DocGenClassVisitor(methodName, expectedSignature, collector);
-    classReader.accept(classVisitor, ClassReader.SKIP_FRAMES);
+    try {
+      classReader.accept(classVisitor, ClassReader.SKIP_FRAMES);
+    } catch (Exception e) {
+      System.err.println("WARNING: Error reading " + className + ": " + e.getMessage());
+    }
     if (!classVisitor.isMethodFound()) {
       try {
         var superClass = classLoader.loadClass(className).getSuperclass().getName();
